@@ -1,0 +1,13 @@
+server:
+  port: 7777
+spring:
+  redis:
+    #    cluster:
+#      nodes: 127.0.0.1:6379
+    lettuce:
+      pool:
+        max-wait: 8
+        min-idle: 0
+    host: 127.0.0.1
+    port: 6379
+
