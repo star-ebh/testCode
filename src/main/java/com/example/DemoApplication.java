@@ -1,6 +1,5 @@
 package com.example;
 
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Console;
@@ -12,12 +11,11 @@ import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson2.JSON;
 import com.example.entity.Test1;
-import com.example.tcp.ClientUtil;
-import com.example.tcp.TcpUtil;
+import com.example.freemarker.FreeMarkerUtil;
 import com.example.test.ReflectTest;
 import com.example.tiapi.TaskSingleton;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,7 +26,13 @@ import org.springframework.core.env.Environment;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -49,7 +53,121 @@ public class DemoApplication implements SpringApplicationRunListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        reflectTest();
+
+        //模拟对象
+        Map<String, String> object1 = new HashMap<>(2);
+        object1.put("number", "1111111111111111111111");
+        object1.put("name", "2222222222222222222");
+        Map<String, String> object2 = new HashMap<>(2);
+        object2.put("number", "333333333333333333");
+        object2.put("name", "44444444444444444");
+        //数据列表
+        List<Map<String, String>> dataList = new ArrayList<>();
+        dataList.add(object1);
+        dataList.add(object2);
+
+        //模板变量
+        Map<String, List<Map<String, String>>> templateMap = new HashMap<>(1);
+        templateMap.put("dataList", dataList);
+        String template = FreeMarkerUtil.processFreemarker("<table style='width:100.0%;border:1px solid #e5e5e5;margin-bottom:15px;border-collapse:collapse;font-size:15px'>\n" +
+                "    <th style='width:40px;border:1px solid #e5e5e5;background-color:#f5f5f5;padding:5px;text-align:center;'>序号</th>\n" +
+                "    <th style='width:150px;border:1px solid #e5e5e5;background-color:#f5f5f5;padding:5px;text-align:center;'>姓名</th>\n" +
+                "    <#list dataList as item>\n" +
+                "        <tr>\n" +
+                "            <td style='padding:5px;text-align:center;border:1px solid #e5e5e5;'>${item.number}</td>\n" +
+                "            <td style='padding:5px;text-align:center;border:1px solid #e5e5e5;'>${item.name}</td>\n" +
+                "        </tr>\n" +
+                "    </#list>\n" +
+                "</table>", templateMap);
+        System.out.println(template);
+
+        //Map<String, Integer> myHashMap = Maps.newHashMap();
+        //myHashMap.put("1", 1);
+        //myHashMap.put("2", 2);
+        //myHashMap.put("3", 3);
+
+        //for (Iterator<Map.Entry<String, Integer>> it = myHashMap.entrySet().iterator(); it.hasNext(); ) {
+        //    Map.Entry<String, Integer> item = it.next();
+        //    if (item.getValue() == 2) {
+        //        it.remove();
+        //    }
+        //}
+        //DateUtil.parse("2022/9/23").year();
+        //log.info("myHashMap-{}", myHashMap);
+        //log.info("111-》{}", String.format("A%05d", 1));
+        //List<Map<String, Object>> test1 = Lists.newArrayList();
+        //Map<Object, Object> map1 = Maps.newHashMap();
+        //Map<Object, Object> map2 = Maps.newHashMap();
+        //Map<Object, Object> map3 = Maps.newHashMap();
+        //map1.put("")
+        //test1.add();
+        //List<String> list2 = Lists.newArrayList();
+        //list2.add("123");
+        //list2.add("456");
+        //list2.add("789");
+        //
+        //String remove1 = list2.remove(0);
+        //Console.log("remove1-{}",remove1);
+        //Console.log("list2-{}",list2);
+        //String remove2 = list2.remove(0);
+        //Console.log("remove2-{}",remove2);
+        //Console.log("list2-{}",list2);
+        //Integer integer = Convert.toInt("01");
+        //log.info("integer{}",integer);
+        //String numberVersion = String.format(Locale.ROOT, "%02d", integer);
+        //log.info("numberVersion{}",numberVersion);
+
+
+        //log.info("111111->{}","李德华".toLowerCase(Locale.ROOT));
+        //List<Object> list = Lists.newArrayList();
+        //list.add("123");
+        //list.add("456");
+        //log.info("list->{}",list);
+        //List<Object> list2 = Lists.newArrayList();
+        //list2.add("123");
+        //list2.add("456");
+        //list2.add("789");
+        //log.info("list2->{}",list2);
+        //List<Object> collect = list2.stream().filter(item -> !list.contains(item)).collect(Collectors.toList());
+        //log.info("collect->{}",collect);
+
+        //String test1 = "C,版本号,DUT1,Begin,雷达SN,192.168.1.200,\r\n";
+        //String test2 = "C,版本号,DUT1,Begin,雷达SN,\r\n";
+        //
+        //List<String> splitList1 = StrSplitter.split(test1, ',', 0, true, true);
+        //List<String> splitList2 = StrSplitter.split(test2, ',', 0, true, true);
+        //
+        //Console.log("size{},内容:{}",splitList1.size(),splitList1);
+        //Console.log("size{},内容:{}",splitList2.size(),splitList2);
+
+        //list.add("名称");
+        //list.add("规格型号");
+        //list.add("描述");
+        //String string = ObjectUtils.toString(list);
+        //Console.log(string);
+        //List<String> list1 = Convert.toList(String.class, string);
+        //Console.log("list->{}",list1);
+        //字符串类型的百分数
+        //String str=" ";
+        //if(str.contains("%")){
+        //        int intValue = Double.valueOf(str.replace("%","")).intValue();
+        //        log.info("sssss->{}",intValue);
+        //}else{
+        //    int intValue = Double.valueOf(str).intValue();
+        //    log.info("aaaa->{}",intValue);
+        //}
+        //if(str.contains("%")){
+        //    NumberFormat nf= NumberFormat.getPercentInstance();
+        //    //将百分数转换成Number类型
+        //    Number m=nf.parse(str);
+        //    double doubleValue = m.doubleValue();
+        //    log.info("mmmmm->{}",doubleValue);
+        //}else{
+        //    int intValue = Double.valueOf(str).intValue();
+        //    log.info("sssss->{}",intValue);
+        //}
+
+        //reflectTest();
         //ConcurrencyTester tester = ThreadUtil.concurrencyTest(2, () -> {
         //
         //
@@ -84,13 +202,13 @@ public class DemoApplication implements SpringApplicationRunListener {
         Method method = ReflectUtil.getMethod(ReflectTest.class, "getId", String.class, String.class);
         Console.log(method);
         ReflectUtil.setAccessible(method);
-        method.invoke(null,"123", "123");
+        method.invoke(null, "123", "123");
         ////ReflectTest testClass = new ReflectTest();
         //final ReflectTest reflectTest = new ReflectTest();
         for (int i = 0; i < 11; i++) {
             //ReflectUtil.invoke(method, "123", "123");
             //ReflectUtil.invoke(reflectTest, "getId", "123", "123");
-            method.invoke(null,"123", "123");
+            method.invoke(null, "123", "123");
 
 
         }
@@ -257,4 +375,24 @@ public class DemoApplication implements SpringApplicationRunListener {
         return (long) (a - x) * 16 * 16 * 16 + (long) (b - y) * 16 * 16 + c - z + 1;
     }
 
+}
+
+class Solution {
+    public boolean isCovered(int[][] ranges, int left, int right) {
+        // 差分数组
+        int[] diff = new int[52];
+        for (int[] range : ranges) {
+            ++diff[range[0]];
+            --diff[range[1] + 1];
+        }
+        // 前缀和
+        int curr = 0;
+        for (int i = 1; i <= 50; ++i) {
+            curr += diff[i];
+            if (i >= left && i <= right && curr <= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
