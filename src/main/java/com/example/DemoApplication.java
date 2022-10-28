@@ -1,20 +1,24 @@
 package com.example;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Console;
 import cn.hutool.core.thread.ConcurrencyTester;
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.http.HttpRequest;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson2.JSON;
 import com.example.entity.Test1;
 import com.example.freemarker.FreeMarkerUtil;
 import com.example.test.ReflectTest;
 import com.example.tiapi.TaskSingleton;
 import com.google.common.collect.Maps;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
@@ -34,6 +38,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author 星星泡面
@@ -53,33 +58,42 @@ public class DemoApplication implements SpringApplicationRunListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //int collect = Convert.toInt(Stream.generate(() -> "9").limit(3).collect(Collectors.joining()));
+        log.info("{}", DateUtil.date().dayOfMonth());
+        //int useNumber = NumberUtil.mul(Convert.toStr("100.01"), "100").intValue();
+        //log.info("{}", useNumber);
 
+        //Map<String, String> object1 = new HashMap<>(2);
+        //object1.put("department", "{id=17b532f154df1d9640bb2444809b3a65, name=前端接收组}");
+        //Map<String, Object> oldMap =
+        //        new Gson().fromJson(Convert.toStr(object1.get("department")), new TypeToken<Map<String, String>>() {}.getType());
+        //log.info("{}", oldMap);
         //模拟对象
-        Map<String, String> object1 = new HashMap<>(2);
-        object1.put("number", "1111111111111111111111");
-        object1.put("name", "2222222222222222222");
-        Map<String, String> object2 = new HashMap<>(2);
-        object2.put("number", "333333333333333333");
-        object2.put("name", "44444444444444444");
-        //数据列表
-        List<Map<String, String>> dataList = new ArrayList<>();
-        dataList.add(object1);
-        dataList.add(object2);
-
-        //模板变量
-        Map<String, List<Map<String, String>>> templateMap = new HashMap<>(1);
-        templateMap.put("dataList", dataList);
-        String template = FreeMarkerUtil.processFreemarker("<table style='width:100.0%;border:1px solid #e5e5e5;margin-bottom:15px;border-collapse:collapse;font-size:15px'>\n" +
-                "    <th style='width:40px;border:1px solid #e5e5e5;background-color:#f5f5f5;padding:5px;text-align:center;'>序号</th>\n" +
-                "    <th style='width:150px;border:1px solid #e5e5e5;background-color:#f5f5f5;padding:5px;text-align:center;'>姓名</th>\n" +
-                "    <#list dataList as item>\n" +
-                "        <tr>\n" +
-                "            <td style='padding:5px;text-align:center;border:1px solid #e5e5e5;'>${item.number}</td>\n" +
-                "            <td style='padding:5px;text-align:center;border:1px solid #e5e5e5;'>${item.name}</td>\n" +
-                "        </tr>\n" +
-                "    </#list>\n" +
-                "</table>", templateMap);
-        System.out.println(template);
+        //Map<String, String> object1 = new HashMap<>(2);
+        //object1.put("number", "1111111111111111111111");
+        //object1.put("name", "2222222222222222222");
+        //Map<String, String> object2 = new HashMap<>(2);
+        //object2.put("number", "333333333333333333");
+        //object2.put("name", "44444444444444444");
+        ////数据列表
+        //List<Map<String, String>> dataList = new ArrayList<>();
+        //dataList.add(object1);
+        //dataList.add(object2);
+        //
+        ////模板变量
+        //Map<String, List<Map<String, String>>> templateMap = new HashMap<>(1);
+        //templateMap.put("dataList", dataList);
+        //String template = FreeMarkerUtil.processFreemarker("<table style='width:100.0%;border:1px solid #e5e5e5;margin-bottom:15px;border-collapse:collapse;font-size:15px'>\n" +
+        //        "    <th style='width:40px;border:1px solid #e5e5e5;background-color:#f5f5f5;padding:5px;text-align:center;'>序号</th>\n" +
+        //        "    <th style='width:150px;border:1px solid #e5e5e5;background-color:#f5f5f5;padding:5px;text-align:center;'>姓名</th>\n" +
+        //        "    <#list dataList as item>\n" +
+        //        "        <tr>\n" +
+        //        "            <td style='padding:5px;text-align:center;border:1px solid #e5e5e5;'>${item.number}</td>\n" +
+        //        "            <td style='padding:5px;text-align:center;border:1px solid #e5e5e5;'>${item.name}</td>\n" +
+        //        "        </tr>\n" +
+        //        "    </#list>\n" +
+        //        "</table>", templateMap);
+        //System.out.println(template);
 
         //Map<String, Integer> myHashMap = Maps.newHashMap();
         //myHashMap.put("1", 1);
