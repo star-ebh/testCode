@@ -9,6 +9,7 @@ import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +21,7 @@ import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -58,8 +60,26 @@ public class DemoApplication implements SpringApplicationRunListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Double amountTotal = 6000D;
+        Double planPayment = 6000D;
+
+        log.info("amountTotal==>{}", amountTotal.compareTo(planPayment) < 0);
+        log.info("amountTotal==>{}", amountTotal.compareTo(planPayment));
+
+        //List<String> list = Lists.newArrayList();
+        //list.add("1");
+        //list.add("2");
+        //list.add("3");
+        //Integer maxLevel = list.stream()
+        //        .filter(StrUtil::isNotBlank)
+        //        .map(Convert::toInt)
+        //        .min(Integer::compare)
+        //        .orElse(4);
+        //log.info("maxLevel=>{}", maxLevel);
+
         //int collect = Convert.toInt(Stream.generate(() -> "9").limit(3).collect(Collectors.joining()));
-        log.info("{}", DateUtil.date().dayOfMonth());
+        Double amountThisPayment = 1D;
+        log.info("111111111111111111111----{}", amountThisPayment.compareTo(0D) <= 0);
         //int useNumber = NumberUtil.mul(Convert.toStr("100.01"), "100").intValue();
         //log.info("{}", useNumber);
 
