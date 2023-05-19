@@ -1,11 +1,8 @@
 package com.example.erp.conditions;
 
+import java.util.List;
+
 public abstract class AbstractWrapper {
-
-    protected StringBuilder sql;
-
-    public AbstractWrapper() {
-        sql = new StringBuilder();
-    }
+    protected List<Filter> sqlFilterList;
 
 }

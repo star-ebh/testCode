@@ -1,8 +1,60 @@
 package com.example.erp.conditions.interfaces;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.function.BiPredicate;
 
-public interface Compare<Children, R> extends Serializable {
+public interface CompareCopy<Children, R> extends Serializable {
+
+    /**
+     * ignore
+     */
+    default <V> Children allEq(Map<R, V> params) {
+        return allEq(params, true);
+    }
+
+    /**
+     * ignore
+     */
+    default <V> Children allEq(Map<R, V> params, boolean null2IsNull) {
+        return allEq(true, params, null2IsNull);
+    }
+
+    /**
+     * map 所有非空属性等于 =
+     *
+     * @param condition   执行条件
+     * @param params      map 类型的参数, key 是字段名, value 是字段值
+     * @param null2IsNull 是否参数为 null 自动执行 isNull 方法, false 则忽略这个字段\
+     * @return children
+     */
+    <V> Children allEq(boolean condition, Map<R, V> params, boolean null2IsNull);
+
+    /**
+     * ignore
+     */
+    default <V> Children allEq(BiPredicate<R, V> filter, Map<R, V> params) {
+        return allEq(filter, params, true);
+    }
+
+    /**
+     * ignore
+     */
+    default <V> Children allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) {
+        return allEq(true, filter, params, null2IsNull);
+    }
+
+    /**
+     * 字段过滤接口，传入多参数时允许对参数进行过滤
+     *
+     * @param condition   执行条件
+     * @param filter      返回 true 来允许字段传入比对条件中
+     * @param params      map 类型的参数, key 是字段名, value 是字段值
+     * @param null2IsNull 是否参数为 null 自动执行 isNull 方法, false 则忽略这个字段
+     * @return children
+     */
+    <V> Children allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull);
+
     /**
      * ignore
      */
@@ -10,6 +62,14 @@ public interface Compare<Children, R> extends Serializable {
         return eq(true, column, val);
     }
 
+    /**
+     * 等于 =
+     *
+     * @param condition 执行条件
+     * @param column    字段
+     * @param val       值
+     * @return children
+     */
     Children eq(boolean condition, R column, Object val);
 
     /**
@@ -97,6 +157,41 @@ public interface Compare<Children, R> extends Serializable {
      */
     Children le(boolean condition, R column, Object val);
 
+    /**
+     * ignore
+     */
+    default Children between(R column, Object val1, Object val2) {
+        return between(true, column, val1, val2);
+    }
+
+    /**
+     * BETWEEN 值1 AND 值2
+     *
+     * @param condition 执行条件
+     * @param column    字段
+     * @param val1      值1
+     * @param val2      值2
+     * @return children
+     */
+    Children between(boolean condition, R column, Object val1, Object val2);
+
+    /**
+     * ignore
+     */
+    default Children notBetween(R column, Object val1, Object val2) {
+        return notBetween(true, column, val1, val2);
+    }
+
+    /**
+     * NOT BETWEEN 值1 AND 值2
+     *
+     * @param condition 执行条件
+     * @param column    字段
+     * @param val1      值1
+     * @param val2      值2
+     * @return children
+     */
+    Children notBetween(boolean condition, R column, Object val1, Object val2);
 
     /**
      * ignore
@@ -114,7 +209,6 @@ public interface Compare<Children, R> extends Serializable {
      * @return children
      */
     Children like(boolean condition, R column, Object val);
-
 
     /**
      * ignore
@@ -166,5 +260,4 @@ public interface Compare<Children, R> extends Serializable {
      * @return children
      */
     Children likeRight(boolean condition, R column, Object val);
-
 }

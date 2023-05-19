@@ -1,7 +1,6 @@
 package com.example.erp.conditions.enmus;
 
 import com.example.erp.conditions.ISqlSegment;
-import jodd.util.StringPool;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -13,11 +12,11 @@ public enum SqlKeyword implements ISqlSegment {
     NOT_IN("NOT IN"),
     LIKE("LIKE"),
     NOT_LIKE("NOT LIKE"),
-    EQ(StringPool.EQUALS),
+    EQ("="),
     NE("<>"),
-    GT(StringPool.RIGHT_CHEV),
+    GT(">"),
     GE(">="),
-    LT(StringPool.LEFT_CHEV),
+    LT("<"),
     LE("<="),
     IS_NULL("IS NULL"),
     IS_NOT_NULL("IS NOT NULL"),
