@@ -33,4 +33,16 @@ public class IpUtils {
                 (ipLong & 0xFF);
     }
 
+    /**
+     * 是否为同一网段
+     *
+     * @param ip            IP
+     * @param numberSection 编号部分
+     * @return boolean
+     */
+    public static boolean isEqualsSection(String ip, long numberSection) {
+        long takeMold = ipToLong(ip) % 256;
+        return takeMold == numberSection;
+    }
+
 }
