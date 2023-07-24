@@ -31,6 +31,7 @@ import org.springframework.core.env.Environment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,9 +63,13 @@ public class DemoApplication implements SpringApplicationRunListener {
         }
         Double amountTotal = 6000D;
         Double planPayment = 6000D;
+        Map<String, Object> sourceEntryItemMap = Maps.newLinkedHashMap();
+        sourceEntryItemMap.put("FEntryID",  Convert.toBigDecimal(17.555555555555555555555555).setScale(10, RoundingMode.DOWN));
+        log.info("sourceEntryItemMap==>{}", new Gson().toJson(sourceEntryItemMap));
 
         log.info("amountTotal==>{}", amountTotal.compareTo(planPayment) < 0);
         log.info("amountTotal==>{}", amountTotal.compareTo(planPayment));
+        log.info("cbsPayTimeStamp==>{}", DateUtil.format(DateUtil.date(1686129823000L), "yyyy-MM-dd HH:mm:ss"));
 
         //List<String> list = Lists.newArrayList();
         //list.add("1");
