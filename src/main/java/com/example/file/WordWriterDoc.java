@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 public class WordWriterDoc {
     public static void main(String[] args) throws Exception {
         // Load Word document
-        XWPFDocument doc = new XWPFDocument(new FileInputStream("E:\\R-COP-02-01-03 试制管理规定_20220606.doc"));
+        XWPFDocument doc = new XWPFDocument(new FileInputStream("E:\\R-SP-05-01-F05 04版 体系文件模板20230510.docx"));
 
         // Get the first section of the document
         XWPFHeader header = doc.getHeaderList().get(0);
@@ -25,7 +25,7 @@ public class WordWriterDoc {
         run.addPicture(new FileInputStream("E:\\yinzhang.png"), XWPFDocument.PICTURE_TYPE_PNG, "stamp.png", Units.toEMU(120), Units.toEMU(80));
 
         // Save the document
-        doc.write(new FileOutputStream("E:\\AddStamp.docx"));
+        doc.write(new FileOutputStream("E:\\213asdasdasd213.docx"));
         doc.close();
     }
 }
