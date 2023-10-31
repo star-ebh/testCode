@@ -58,7 +58,8 @@ public class WordHeaderExample3 {
     }
 
     public static void main(String[] args) throws Exception {
-        XWPFDocument document = new XWPFDocument(deleteRevisions(new FileInputStream("E:\\RS-FIN-02-0001 财务资料外发管理办法.docx")));
+//        XWPFDocument document = new XWPFDocument(deleteRevisions(new FileInputStream("E:\\RS-FIN-02-0001 财务资料外发管理办法.docx")));
+        XWPFDocument document = new XWPFDocument(deleteRevisions(new FileInputStream("E:\\RS-IC-01-0001 01版 内部控制管理制度.doc")));
 
         XWPFHeader header = document.getHeaderList().get(0);
         XWPFParagraph paragraph = header.createParagraph();
