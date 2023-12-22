@@ -1,48 +1,64 @@
 package com.example.file;
 
-import com.documents4j.api.DocumentType;
-import com.documents4j.api.IConverter;
-import com.documents4j.job.LocalConverter;
-import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.text.TextPosition;
 import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.util.List;
 
-public class WordHeaderExample {
+public class WordHeaderExample7 {
     public static void main(String[] args) throws Exception {
-        XWPFDocument document = new XWPFDocument(new FileInputStream("E:\\备用金管理办法.docx"));
-        XWPFHeader header = document.getHeaderList().get(0);
-        XWPFParagraph paragraph = header.createParagraph();
-        XWPFRun run = paragraph.createRun();
-        // 设置图片
-        // 添加浮动图片
-        run = paragraph.createRun();
-        InputStream in = new FileInputStream("E:\\yinzhang.png");
-        run.addPicture(in, Document.PICTURE_TYPE_PNG, "TEST", Units.toEMU(120), Units.toEMU(80));
-        in.close();
-        // 2. 获取到图片数据
-        CTDrawing drawing = run.getCTR().getDrawingArray(0);
-        CTGraphicalObject graphicalobject = drawing.getInlineArray(0).getGraphic();
+        FileInputStream pdfFile = new FileInputStream("E:\\备用金管理办法Pictures1.pdf"); // 之前转换的PDF文件
+        PDDocument pdfDocument = PDDocument.load(pdfFile);
 
-        //拿到新插入的图片替换添加CTAnchor 设置浮动属性 删除inline属性
-        CTAnchor anchor = getAnchorWithGraphic(graphicalobject, "TEST1", Units.toEMU(120), Units.toEMU(80),// 图片大小
-                // 相对当前段落位置 需要计算段落已有内容的左偏移
-                Units.toEMU(350), Units.toEMU(75), false);
-        drawing.setAnchorArray(new CTAnchor[]{anchor});//添加浮动属性
-        drawing.removeInline(0);//删除行内属性
-        document.write(new FileOutputStream("E:\\备用金管理办法Pictures1.docx"));
-        document.close();
+        // 获取PDF的第一页
+        PDPage page = pdfDocument.getPage(0);
 
-        IConverter converter = LocalConverter.builder().build();
-        converter.convert(new FileInputStream("E:\\备用金管理办法Pictures1.docx")).as(DocumentType.DOCX).to(new File("E:\\备用金管理办法Pictures1.pdf")).as(DocumentType.PDF).execute();
-        converter.shutDown();
+        // 创建一个自定义的文本提取器，以获取坐标信息
+        MyPDFTextStripper stripper = new MyPDFTextStripper();
+        stripper.setStartPage(0);
+        stripper.setEndPage(1);
+
+        // 提取文本和坐标信息
+        stripper.getText(pdfDocument);
+
+        // 获取文本坐标信息
+        List<List<TextPosition>> textPositionsList = stripper.getTextPositions();
+
+        // 遍历文本坐标信息，查找段落位置
+        for (List<TextPosition> textPositions : textPositionsList) {
+            for (TextPosition text : textPositions) {
+                float x = text.getXDirAdj();
+                float y = text.getYDirAdj();
+                String content = text.getUnicode();
+                System.out.println("文本内容: " + content);
+                System.out.println("X坐标: " + x);
+                System.out.println("Y坐标: " + y);
+                // 在这里，你可以根据Y坐标信息估算段落距离页面顶部的高度
+            }
+        }
+
+        pdfDocument.close();
+    }
+
+    private static class MyPDFTextStripper extends PDFTextStripper {
+        private final List<List<TextPosition>> textPositions;
+
+        public MyPDFTextStripper() throws IOException {
+            super();
+            textPositions = getCharactersByArticle();
+        }
+
+        public List<List<TextPosition>> getTextPositions() {
+            return textPositions;
+        }
     }
 
     /**

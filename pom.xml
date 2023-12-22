@@ -16,7 +16,7 @@
     <properties>
         <java.version>1.8</java.version>
         <commons.version>2.6</commons.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.2.3</poi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -184,11 +184,11 @@
             <artifactId>log4j-api</artifactId>
             <version>2.17.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.pdfbox</groupId>-->
-<!--            <artifactId>pdfbox</artifactId>-->
-<!--            <version>2.0.27</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>com.itextpdf</groupId>-->
@@ -211,43 +211,51 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-scratchpad</artifactId>
-            <version>4.1.2</version>
+            <version>5.2.3</version>
         </dependency>
 
         <!-- 操作excel的库 注意版本保持一致 poi poi-ooxml  poi-scratchpad -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>4.1.2</version>
+            <version>5.2.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>4.1.2</version>
+            <version>5.2.3</version>
         </dependency>
-
         <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>
-            <version>2.0.2</version>
+            <groupId>cn.robosense</groupId>
+            <artifactId>edi-sdk</artifactId>
+            <version>1.7.17</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+<!--            <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>-->
+<!--            <version>2.0.2</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.xdocreport.converter.docx.xwpf -->
+<!--        <dependency>-->
+<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+<!--            <artifactId>fr.opensagres.xdocreport.converter.docx.xwpf</artifactId>-->
+<!--            <version>2.0.1</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.aspose</groupId>-->
+<!--            <artifactId>aspose-words</artifactId>-->
+<!--            <version>21.1</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/lib/aspose-words-21.1-jdk17-cracked.jar</systemPath>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>fr.opensagres.xdocreport.converter.docx.xwpf</artifactId>
-            <version>2.0.1</version>
+            <groupId>com.larksuite.oapi</groupId>
+            <artifactId>oapi-sdk</artifactId>
+            <version>2.0.30</version>
         </dependency>
-        <dependency>
-            <groupId>com.aspose</groupId>
-            <artifactId>aspose-words</artifactId>
-            <version>21.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/aspose-words-21.1-jdk17-cracked.jar</systemPath>
-        </dependency>
-
     </dependencies>
 
     <build>
