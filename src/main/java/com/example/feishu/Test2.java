@@ -14,7 +14,7 @@ import java.util.Locale;
 @Slf4j
 public class Test2 {
     public static void main(String[] args) throws Exception {
-        String startMac = "40-2C-76-85-00-00";
+        String startMac = "40-2C-76-84-EE-D9";
         long countMac = countMac(startMac, "40-2C-76-8F-FF-FF");
         System.out.println("总数=>" + countMac);
         System.out.println("总数=>" + countMac("40-2C-76-80-00-00", "40-2C-76-8F-FF-FF"));

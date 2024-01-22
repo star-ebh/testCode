@@ -1,6 +1,12 @@
 package com.example.file;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.IdcardUtil;
+import cn.hutool.http.HtmlUtil;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import lombok.Data;
@@ -24,36 +30,30 @@ import java.util.regex.Pattern;
 
 public class WordHeaderExample12 {
     public static void main(String[] args) {
-        String html = "<html><head><title>Example</title></head><body><h1>Hello, World!</h1><p>This is an example.</p><img src=\"image.jpg\"><table><tr><td>Cell 1</td><td>Cell 2</td></tr></table></body></html>";
-
-        boolean hasVisibleContent = hasVisibleContent(html);
-        System.out.println("Has visible content: " + hasVisibleContent);
+        String test ="H12345678";
+        System.out.println(isHKCard(test));
+        System.out.println(IdcardUtil.isValidCard(test));
+        System.out.println(DateUtil.lastMonth().toDateStr());
+        System.out.println(DateUtil.format(DateUtil.lastMonth(), "yyyy-MM"));
+        System.out.println(DateUtil.format(DateUtil.offsetMonth(DateUtil.parseDate("2023-11-01"), -1), "yyyy-MM"));
+        System.out.println(DateUtil.format(DateUtil.offsetMonth(DateUtil.parseDate("2023-11-30"), -1), "yyyy-MM-dd"));
     }
 
-    public static boolean hasVisibleContent(String html) {
-        // 定义匹配HTML标签的正则表达式
-        String tagRegex = "<[^>]+>";
-        // 定义匹配HTML文字、图片、表格的正则表达式
-        String contentRegex = "<[^>]*>(.|[\n\r])*<[^>]*>";
 
-        // 移除所有的HTML标签
-        String plainContent = html.replaceAll(tagRegex, "");
-
-        // 利用正则表达式匹配文字、图片、表格内容
-        Pattern contentPattern = Pattern.compile(contentRegex);
-        Matcher contentMatcher = contentPattern.matcher(plainContent);
-
-        // 查找匹配的内容
-        while (contentMatcher.find()) {
-            String content = contentMatcher.group();
-
-            // 判断内容是否为空
-            if (!content.trim().isEmpty()) {
-                return true;
-            }
+    /**
+     * 港澳居民来往内地通行证
+     * 规则： H/M + 10位或6位数字
+     * 例：H1234567890
+     */
+    public static Boolean isHKCard(String card) {
+        String reg = "^[HMhm]{1}([0-9]{10}|[0-9]{8})$";
+        if (card.matches(reg) == false) {
+            //港澳居民来往内地通行证号码不合格
+            return false;
+        } else {
+            //校验通过
+            return true;
         }
-
-        return false;
     }
 
 }

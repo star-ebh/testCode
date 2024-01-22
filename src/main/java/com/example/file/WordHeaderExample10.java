@@ -28,14 +28,10 @@ import java.util.Objects;
 
 public class WordHeaderExample10 {
     public static void main(String[] args) throws Exception {
-//        String fileName = "E:\\RS-FIN-01-0001 02版 财务管理制度.docx";
-//        String newFileName = "E:\\RS-FIN-01-0001 02版 财务管理制度1111111111111111111.docx";
-//        String pdfName = "E:\\RS-FIN-01-0001 02版 财务管理制度.docx.pdf";
         IConverter converter = LocalConverter.builder().build();
-
-        String fileName = "Q:\\Downloads\\原文件.docx";
-        String newFileName = "Q:\\Downloads\\RS-AD-02-0003 01版 国内员工差旅管理规定-new.docx";
-        String pdfName = "Q:\\Downloads\\window本地-new.pdf";
+        String fileName = "Q:\\Downloads\\wps文件.docx";
+        String newFileName = "Q:\\Downloads\\wps文件-去除标记后-wps.docx";
+        String pdfName = "Q:\\Downloads\\log错乱-WPS.pdf";
         byte[] byteArray = deleteRevisions(new FileInputStream(fileName));
         Coordinate position = getPosition(converter, byteArray);
         System.out.println("Y轴=>" + position.getY());
@@ -79,15 +75,18 @@ public class WordHeaderExample10 {
         }
         document.write(new FileOutputStream(newFileName));
         document.close();
-//        SdkClient client = SdkClient.newBuilder("mqRMb0Jk", "8b645b0593bb54e643c8d54cbef8083d", "3FFE7F96E879909109C857DE7D8CA00B21C10DC56F0651A47C9DF3E9B7475A5D", "0474A35F34C05C378C46F663D027E5F8AE097A756BE1AE95C1CA7A8104D3BCC29D9388F6140DCC3F63FF257B25B726C75D13919A792EB2EE4D0F85DD98403B7AF8", "KaKOu26cUMcvmEJr", EdiActiveEnum.TEST).build();
-//        InputStream inputStream = client
-//                .fileService()
-//                .word()
-//                .wordToPdf(WordToPdfReq.builder().fileName(pdfName).build(), new FileInputStream(newFileName));
-        converter.convert(new FileInputStream(newFileName)).as(DocumentType.DOCX).to(new File(pdfName)).as(DocumentType.PDF).execute();
+        SdkClient client = SdkClient.newBuilder("Bei8N7SS", "d12915bc44c0c87843c8d54cbef8083d",
+                "00B59E51470F19BF44A4249B8F5CFD15CD32FE473EFAC09CF61C29F31DD8F7950A",
+                "0449446A228B49704432CD6C7287813990EAAEBF9CAB9E62606A43E64DAED9C97A4CEB38B0678E446FF773C1298DF2F933E329536699ACDD85C134FA9E2BFCD29D",
+                "jrx70jUTNSEe0zfS", EdiActiveEnum.PROD).build();
+        InputStream inputStream = client
+                .fileService()
+                .word()
+                .wordToPdf(WordToPdfReq.builder().isWps(true).fileName(pdfName).build(), new FileInputStream(newFileName));
+//        converter.convert(new FileInputStream(newFileName)).as(DocumentType.DOCX).to(new File(pdfName)).as(DocumentType.PDF).execute();
+        byte[] bytes = IoUtil.readBytes(inputStream);
+        IoUtil.write(new FileOutputStream(pdfName), true, bytes);
         converter.shutDown();
-//        byte[] bytes = IoUtil.readBytes(inputStream);
-//        IoUtil.write(new FileOutputStream(pdfName), true, bytes);
     }
 
 

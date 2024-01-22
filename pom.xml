@@ -60,27 +60,27 @@
             <systemPath>${pom.basedir}/src/main/resources/libs/AXMLPrinter2.jar
             </systemPath>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.poi</groupId>-->
-<!--            <artifactId>poi</artifactId>-->
-<!--            <version>${poi.version}</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.logging.log4j</groupId>-->
-<!--                    <artifactId>log4j-api</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.poi</groupId>-->
-<!--            <artifactId>poi-ooxml</artifactId>-->
-<!--            <version>${poi.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.poi</groupId>-->
-<!--            <artifactId>poi-scratchpad</artifactId>-->
-<!--            <version>${poi.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.poi</groupId>-->
+        <!--            <artifactId>poi</artifactId>-->
+        <!--            <version>${poi.version}</version>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>org.apache.logging.log4j</groupId>-->
+        <!--                    <artifactId>log4j-api</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.poi</groupId>-->
+        <!--            <artifactId>poi-ooxml</artifactId>-->
+        <!--            <version>${poi.version}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.poi</groupId>-->
+        <!--            <artifactId>poi-scratchpad</artifactId>-->
+        <!--            <version>${poi.version}</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
@@ -190,21 +190,18 @@
             <version>2.0.27</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>itextpdf</artifactId>-->
-<!--            <version>5.5.13</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.itextpdf</groupId>-->
+        <!--            <artifactId>itextpdf</artifactId>-->
+        <!--            <version>5.5.13</version>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash;输出中文，还要引入下面itext-asian.jar包：&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>itext-asian</artifactId>-->
-<!--            <version>5.2.0</version>-->
-<!--        </dependency>-->
-
-
-
+        <!--        &lt;!&ndash;输出中文，还要引入下面itext-asian.jar包：&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.itextpdf</groupId>-->
+        <!--            <artifactId>itext-asian</artifactId>-->
+        <!--            <version>5.2.0</version>-->
+        <!--        </dependency>-->
 
 
         <!-- WordToHtml .doc .odcx  poi  -->
@@ -230,31 +227,38 @@
         <dependency>
             <groupId>cn.robosense</groupId>
             <artifactId>edi-sdk</artifactId>
-            <version>1.7.17</version>
+            <version>1.7.24</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
-<!--            <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>-->
-<!--            <version>2.0.2</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+        <!--            <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>-->
+        <!--            <version>2.0.2</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.xdocreport.converter.docx.xwpf -->
-<!--        <dependency>-->
-<!--            <groupId>fr.opensagres.xdocreport</groupId>-->
-<!--            <artifactId>fr.opensagres.xdocreport.converter.docx.xwpf</artifactId>-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.aspose</groupId>-->
-<!--            <artifactId>aspose-words</artifactId>-->
-<!--            <version>21.1</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${project.basedir}/lib/aspose-words-21.1-jdk17-cracked.jar</systemPath>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>fr.opensagres.xdocreport</groupId>-->
+        <!--            <artifactId>fr.opensagres.xdocreport.converter.docx.xwpf</artifactId>-->
+        <!--            <version>2.0.1</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.aspose</groupId>-->
+        <!--            <artifactId>aspose-words</artifactId>-->
+        <!--            <version>21.1</version>-->
+        <!--            <scope>system</scope>-->
+        <!--            <systemPath>${project.basedir}/lib/aspose-words-21.1-jdk17-cracked.jar</systemPath>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.larksuite.oapi</groupId>
             <artifactId>oapi-sdk</artifactId>
             <version>2.0.30</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jacob</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.20</version>
+            <scope>system</scope>-->
+            <systemPath>${project.basedir}/lib/jacob.jar</systemPath>
         </dependency>
     </dependencies>
 
