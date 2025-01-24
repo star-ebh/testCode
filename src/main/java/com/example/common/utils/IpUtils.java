@@ -7,6 +7,11 @@ package com.example.common.utils;
  * @createTime 2022年03月03日 15:21:00
  */
 public class IpUtils {
+    public static void main(String[] args) {
+        System.out.println(ipToLong("192.168.24.81"));
+        System.out.println(longToIp(3232241745L));
+
+    }
 
     /**
      * 把字符串IP转换成long

@@ -1,7 +1,5 @@
 package com.example.file;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.robosense.SdkClient;
 import cn.robosense.core.enums.EdiActiveEnum;
@@ -9,10 +7,6 @@ import cn.robosense.service.file.v1.model.WordToPdfReq;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
-import com.jacob.activeX.ActiveXComponent;
-import com.jacob.com.ComThread;
-import com.jacob.com.Dispatch;
-import com.jacob.com.Variant;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -25,84 +19,70 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.impl.schema.DocumentFactory;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTMarkup;
 
 import java.io.*;
-import java.util.List;
 import java.util.Objects;
 
-import static javax.swing.UIManager.get;
-
-public class WordHeaderExample10 {
-
-    static final SdkClient client = SdkClient.newBuilder("Bei8N7SS", "d12915bc44c0c87843c8d54cbef8083d",
-            "00B59E51470F19BF44A4249B8F5CFD15CD32FE473EFAC09CF61C29F31DD8F7950A",
-            "0449446A228B49704432CD6C7287813990EAAEBF9CAB9E62606A43E64DAED9C97A4CEB38B0678E446FF773C1298DF2F933E329536699ACDD85C134FA9E2BFCD29D",
-            "jrx70jUTNSEe0zfS", EdiActiveEnum.PROD).build();
+public class ExcelHeaderExample10 {
 
     public static void main(String[] args) throws Exception {
         IConverter converter = LocalConverter.builder().build();
-        String fileName = "Q:\\Downloads\\RS-SM-02-0004 01版 客户信用管理办法.docx";
-        String newFileName = "Q:\\Downloads\\RS-SM-02-0004 01版 客户信用管理办法-受控后.docx";
-        String pdfName = "Q:\\Downloads\\RS-SM-02-0004 01版 客户信用管理办法.pdf";
+        String fileName = "Q:\\Downloads\\R-COP-01-01-42 附件1 01版 光学设计开发流程图.xls.xls";
+        String pdfName = "Q:\\Downloads\\R-COP-01-01-42 附件1 01版 光学设计开发流程图.xls.pdf";
         byte[] byteArray = deleteRevisions(new FileInputStream(fileName));
-        Coordinate position = getPosition(byteArray, pdfName);
+
+        Coordinate position = getPosition(converter, byteArray);
         System.out.println("Y轴=>" + position.getY());
         System.out.println("X轴=>" + position.getX());
-        ByteArrayInputStream wordInputStream = new ByteArrayInputStream(byteArray);
+        InputStream wordInputStream =new FileInputStream(fileName);
 
-        XWPFDocument document = new XWPFDocument(wordInputStream);
-        List<XWPFHeader> headerList = document.getHeaderList();
-        for (XWPFHeader header : headerList) {
-//        XWPFHeader header = headerList.get(0);
-
-            XWPFParagraph paragraph = header.createParagraph();
-            XWPFRun run = paragraph.createRun();
-            // 设置图片
-            // 添加浮动图片
-            InputStream in = new FileInputStream("E:\\yinzhang.png");
-            run.addPicture(in, Document.PICTURE_TYPE_PNG, "TEST", Units.toEMU(120), Units.toEMU(80));
-            in.close();
-            // 2. 获取到图片数据
-            CTDrawing drawing = run.getCTR().getDrawingArray(0);
-            CTGraphicalObject graphicalobject = drawing.getInlineArray(0).getGraphic();
-
-            //拿到新插入的图片替换添加CTAnchor 设置浮动属性 删除inline属性
-            CTAnchor anchor = getAnchorWithGraphic(graphicalobject, "TEST1", Units.toEMU(120), Units.toEMU(80),// 图片大小
-                    // 相对当前段落位置 需要计算段落已有内容的左偏移
-                    Units.toEMU(position.getX() - 120), Units.toEMU(position.getY() - 75), false);
-            drawing.setAnchorArray(new CTAnchor[]{anchor});//添加浮动属性
-            drawing.removeInline(0);//删除行内属性
-            for (int i = header.getParagraphs().size() - 1; i >= 0; i--) {
-                XWPFParagraph itemParagraph = header.getParagraphs().get(i);
-                boolean isRemoveParagraph = true;
-                if (Objects.nonNull(itemParagraph.getRuns())) {
-                    for (XWPFRun itemRun : itemParagraph.getRuns()) {
-                        if (Objects.nonNull(itemRun.getCTR()) && Objects.nonNull(itemRun.getCTR().getDrawingArray())
-                                && itemRun.getCTR().getDrawingArray().length > 0) {
-                            CTDrawing itemDrawing = itemRun.getCTR().getDrawingArray(0);
-                            if (Objects.nonNull(itemDrawing)) {
-                                isRemoveParagraph = false;
-                            }
-                        }
-                    }
-                }
-                if (isRemoveParagraph) {
-                    header.removeParagraph(itemParagraph);
-                }
-            }
-        }
-
-        document.write(new FileOutputStream(newFileName));
-        document.close();
-
+//        XWPFDocument document = new XWPFDocument(wordInputStream);
+//        XWPFHeader header = document.getHeaderList().get(0);
+//
+//        XWPFParagraph paragraph = header.createParagraph();
+//        XWPFRun run = paragraph.createRun();
+//        // 设置图片
+//        // 添加浮动图片
+//        InputStream in = new FileInputStream("E:\\yinzhang.png");
+//        run.addPicture(in, Document.PICTURE_TYPE_PNG, "TEST", Units.toEMU(120), Units.toEMU(80));
+//        in.close();
+//        // 2. 获取到图片数据
+//        CTDrawing drawing = run.getCTR().getDrawingArray(0);
+//        CTGraphicalObject graphicalobject = drawing.getInlineArray(0).getGraphic();
+//
+//        //拿到新插入的图片替换添加CTAnchor 设置浮动属性 删除inline属性
+//        CTAnchor anchor = getAnchorWithGraphic(graphicalobject, "TEST1", Units.toEMU(120), Units.toEMU(80),// 图片大小
+//                // 相对当前段落位置 需要计算段落已有内容的左偏移
+//                Units.toEMU(position.getX() - 120), Units.toEMU(position.getY() - 75), false);
+//        drawing.setAnchorArray(new CTAnchor[]{anchor});//添加浮动属性
+//        drawing.removeInline(0);//删除行内属性
+//        for (int i = header.getParagraphs().size() - 1; i >= 0; i--) {
+//            XWPFParagraph itemParagraph = header.getParagraphs().get(i);
+//            boolean isRemoveParagraph = true;
+//            for (XWPFRun itemRun : itemParagraph.getRuns()) {
+//                if (Objects.nonNull(itemRun.getCTR())) {
+//                    CTDrawing itemDrawing = itemRun.getCTR().getDrawingArray(0);
+//                    if (Objects.nonNull(itemDrawing)) {
+//                        isRemoveParagraph = false;
+//                    }
+//                }
+//            }
+//            if (isRemoveParagraph) {
+//                header.removeParagraph(itemParagraph);
+//            }
+//        }
+//        document.write(new FileOutputStream(newFileName));
+//        document.close();
+        SdkClient client = SdkClient.newBuilder("mqRMb0Jk", "8b645b0593bb54e643c8d54cbef8083d",
+                "3FFE7F96E879909109C857DE7D8CA00B21C10DC56F0651A47C9DF3E9B7475A5D",
+                "0474A35F34C05C378C46F663D027E5F8AE097A756BE1AE95C1CA7A8104D3BCC29D9388F6140DCC3F63FF257B25B726C75D13919A792EB2EE4D0F85DD98403B7AF8",
+                "KaKOu26cUMcvmEJr", EdiActiveEnum.TEST).build();
         InputStream inputStream = client
                 .fileService()
                 .word()
-                .wordToPdf(WordToPdfReq.builder()
-                        .isWps(true)
-                        .fileName(pdfName).build(), new FileInputStream(newFileName));
+                .wordToPdf(WordToPdfReq.builder().isWps(true).fileName(pdfName).build(), wordInputStream);
 //        converter.convert(new FileInputStream(newFileName)).as(DocumentType.DOCX).to(new File(pdfName)).as(DocumentType.PDF).execute();
         byte[] bytes = IoUtil.readBytes(inputStream);
         IoUtil.write(new FileOutputStream(pdfName), true, bytes);
@@ -110,22 +90,14 @@ public class WordHeaderExample10 {
     }
 
 
-    //    private static Coordinate getPosition(IConverter converter, byte[] byteArray) throws IOException {
-    public static Coordinate getPosition(byte[] byteArray, String fileName) throws IOException {
+    private static Coordinate getPosition(IConverter converter, byte[] byteArray) throws IOException {
         // 转换PDF计算标记位置
-//        ByteArrayInputStream pdfInputStream = new ByteArrayInputStream(byteArray);
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        converter.convert(pdfInputStream).as(DocumentType.DOCX).to(byteArrayOutputStream).as(DocumentType.PDF).execute();
-//        byte[] newByteArray = byteArrayOutputStream.toByteArray();
-//        IoUtil.close(byteArrayOutputStream);
-        InputStream inputStream = client
-                .fileService()
-                .word()
-                .wordToPdf(WordToPdfReq.builder()
-                        .isWps(true)
-                        .fileName(fileName).build(), new ByteArrayInputStream(byteArray));
-        byte[] bytes = IoUtil.readBytes(inputStream);
-        ByteArrayInputStream newPdfInputStream = new ByteArrayInputStream(bytes);
+        ByteArrayInputStream pdfInputStream = new ByteArrayInputStream(byteArray);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        converter.convert(pdfInputStream).as(DocumentType.DOCX).to(byteArrayOutputStream).as(DocumentType.PDF).execute();
+        byte[] newByteArray = byteArrayOutputStream.toByteArray();
+        IoUtil.close(byteArrayOutputStream);
+        ByteArrayInputStream newPdfInputStream = new ByteArrayInputStream(newByteArray);
         MyPDFTextStripper stripper = new MyPDFTextStripper();
         stripper.setStartPage(0);
         stripper.setEndPage(1);
@@ -173,7 +145,6 @@ public class WordHeaderExample10 {
         return byteArray;
     }
 
-
     @Data
     private static class Coordinate {
         private float y = 0;
@@ -202,32 +173,25 @@ public class WordHeaderExample10 {
             }
 
             // 如果遇到分隔符（例如空格），表示当前段落结束
-//            if (text.getUnicode().equals(" ")) {
-            // 处理当前文本字符串
-            String paragraphText = currentText.toString();
-            float x = text.getXDirAdj();
-            float y = text.getYDirAdj();
-            if (StringUtils.contains(paragraphText, "文件等级")) {
-                // || StringUtils.contains(paragraphText,"Confidential")
-                // 计算要补充的字数
-//                yCoordinate = y+5;
-                yCoordinate = y;
-//                xCoordinate = x+33;
-                xCoordinate = x;
-//                xCoordinate = paragraphText.length() > 10 ? (float) (x - (paragraphText.length() - 4) * 1.2) : x + paragraphText.length() + 2;
-                System.out.println("paragraphText 文本: " + paragraphText);
-                System.out.println("paragraphText 文本字数: " + paragraphText.length());
-                System.out.println("X坐标0: " + x);
-                System.out.println("X坐标1: " + text.getX());
-                System.out.println("X坐标2: " + text.getXScale());
-                System.out.println("X坐标3: " + text.getEndX());
+            if (text.getUnicode().equals(" ")) {
+                // 处理当前文本字符串
+                String paragraphText = currentText.toString();
+                float x = text.getXDirAdj();
+                float y = text.getYDirAdj();
+                if (StringUtils.contains(paragraphText, "文件等级")) {
+                    // 计算要补充的字数
+                    yCoordinate = y;
+                    xCoordinate = paragraphText.length() > 10 ? (float) (x - (paragraphText.length() - 4) * 1.2) : x + paragraphText.length() + 2;
+                    System.out.println("paragraphText 文本: " + paragraphText);
+                    System.out.println("paragraphText 文本字数: " + paragraphText.length());
+                    System.out.println("X坐标0: " + x);
+                    System.out.println("X坐标1: " + text.getX());
+                    System.out.println("X坐标2: " + text.getXScale());
+                    System.out.println("X坐标3: " + text.getEndX());
+                }
+                // 重置当前文本字符串
                 currentText = new StringBuilder();
             }
-            // 重置当前文本字符串
-            if (currentText.length() >= 2000) {
-                currentText = new StringBuilder();
-            }
-//            }
         }
     }
 

@@ -18,7 +18,7 @@ public class InsertImageIntoExcel {
         String imagePath = "E:\\yinzhang.png";
         FileInputStream imageStream = new FileInputStream(imagePath);
 
-        String excelPath = "E:\\testExcel.xlsx";
+        String excelPath = "Q:\\Downloads\\受控版 R-COP-05-FC-0214 0214振镜 过程流程图 08版.xlsx";
         FileInputStream excelStream = new FileInputStream(excelPath);
 
         byte[] imageData = new byte[imageStream.available()];
@@ -30,7 +30,7 @@ public class InsertImageIntoExcel {
         excelStream.close();
 
         // 指定输出Excel文件路径
-        String outputPath = "E:\\生成后.xlsx";
+        String outputPath = "Q:\\Downloads\\生成后.xlsx";
         File outputFile = new File(outputPath);
         // 创建Excel工作簿并添加图像
         XSSFWorkbook workbook = (XSSFWorkbook) WorkbookFactory.create(excelStream);

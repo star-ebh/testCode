@@ -1,6 +1,9 @@
 package com.example.file;
 
 import cn.hutool.core.io.IoUtil;
+import cn.robosense.SdkClient;
+import cn.robosense.core.enums.EdiActiveEnum;
+import cn.robosense.service.file.v1.model.WordToPdfReq;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
@@ -18,45 +21,26 @@ import org.openxmlformats.schemas.drawingml.x2006.main.CTGraphicalObject;
 import org.openxmlformats.schemas.drawingml.x2006.wordprocessingDrawing.CTAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDrawing;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTMarkup;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTMarkupRange;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 
 import java.io.*;
 import java.util.Objects;
 
-public class WordHeaderExample11 {
+public class WordHeaderExample15 {
+
     public static void main(String[] args) throws Exception {
-//        String fileName = "Q:\\Downloads\\原文件.docx";
-        String fileName = "Q:\\Downloads\\R-SP-04-01-07 01版 复制线设备导入流程.docx";
-        String newFileName = "Q:\\Downloads\\R-SP-04-01-07 01版 复制线设备导入流程.docx-test.docx";
-        byte[] byteArray = deleteRevisions(new FileInputStream(fileName));
-        ByteArrayInputStream wordInputStream = new ByteArrayInputStream(byteArray);
-        XWPFDocument document = new XWPFDocument(wordInputStream);
-        XWPFHeader header = document.getHeaderList().get(0);
-        System.out.println("页眉段落数=>" + header.getParagraphs().size());
-        for (int i = header.getParagraphs().size() - 1; i >= 0; i--) {
-            XWPFParagraph itemParagraph = header.getParagraphs().get(i);
-            System.out.println("页眉段落Runs数=>" + itemParagraph.getRuns().size());
-            boolean isRemoveParagraph = true;
-            for (XWPFRun itemRun : itemParagraph.getRuns()) {
-                if (Objects.nonNull(itemRun.getCTR())) {
-                    CTDrawing itemDrawing = itemRun.getCTR().getDrawingArray(0);
-                    if (Objects.nonNull(itemDrawing)) {
-                        isRemoveParagraph = false;
-                    }
-                }
-            }
-            if (isRemoveParagraph) {
-                header.removeParagraph(itemParagraph);
-            }
-        }
-//        for (XWPFParagraph paragraph : header.getParagraphs()) {
-//            System.out.println("页眉段落Runs数=>" + paragraph.getRuns().size());
-//            System.out.println("页眉段落内容=>" + paragraph.getText());
-//            header.removeParagraph(paragraph);
-//        }
-        document.write(new FileOutputStream(newFileName));
-        document.close();
+        String fileName = "Q:\\Downloads\\obj_e2ff6b9a54b746b099f70316ecbf58db-dev.bpmn";
+        String pdfName = "Q:\\Downloads\\log错乱-WPS.pdf";
+
+        SdkClient client = SdkClient.newBuilder("mqRMb0Jk", "8b645b0593bb54e643c8d54cbef8083d",
+                "3FFE7F96E879909109C857DE7D8CA00B21C10DC56F0651A47C9DF3E9B7475A5D",
+                "0474A35F34C05C378C46F663D027E5F8AE097A756BE1AE95C1CA7A8104D3BCC29D9388F6140DCC3F63FF257B25B726C75D13919A792EB2EE4D0F85DD98403B7AF8",
+                "KaKOu26cUMcvmEJr", EdiActiveEnum.TEST).build();
+        InputStream inputStream = client
+                .fileService()
+                .word()
+                .wordToPdf(WordToPdfReq.builder().isWps(true).fileName(pdfName).build(), new FileInputStream(fileName));
+        byte[] bytes = IoUtil.readBytes(inputStream);
+        IoUtil.write(new FileOutputStream(pdfName), true, bytes);
     }
 
 
